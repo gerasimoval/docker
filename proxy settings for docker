@@ -1,0 +1,27 @@
+Creating Proxy Configuration
+
+    Create a new directory for our Docker service configurations.
+
+    sudo mkdir -p /etc/systemd/system/docker.service.d
+
+    Create a file called proxy.conf in our configuration directory.
+
+    sudo vi /etc/systemd/system/docker.service.d/proxy.conf
+
+    Add the following contents, changing the values to match your environment.
+
+    [Service]
+    Environment="HTTP_PROXY=http://myproxy.hostname:8080"
+    Environment="HTTPS_PROXY=https://myproxy.hostname:8080/"
+    Environment="NO_PROXY="localhost,127.0.0.1,::1"
+
+    Save your changes and exit the text editor.
+    Reload the daemon configuration.
+
+    sudo systemctl daemon-reload
+
+    Restart Docker to apply our changes.
+
+    sudo systemctl restart docker.service
+
+After the service is restarted Docker should be able to pull images from external repositories. You can test this by attempting to pull down an image. If the download completes and does not timeout, your proxy settings have been applied.
